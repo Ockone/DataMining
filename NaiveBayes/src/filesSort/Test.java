@@ -2,6 +2,7 @@ package filesSort;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class Test {
 		HashMap<String, HashMap<String, Double>> map = AnalyzerM.dig();
 		String C[] = {"CAR", "EDUCATION", "FINANCE", "LOTTERY", "MEDICAL", "NEWS", "PROPERTY", "SPORT", "TOURISM"};
 		for(String c : C) {
-			String path = "C:\\Users\\瑰宝\\Desktop\\SogouC\\Sourceutf8\\" + c;
+			String path = "C:\\Users\\瑰宝\\Desktop\\SogouC\\test\\" + c;
 			File folder = new File(path);
 			File files[] = null;
 			if(folder.isDirectory()) {
@@ -77,19 +78,47 @@ public class Test {
 			
 			for (File f : files) {
 				m++;
-				if(sort(map, f).equals(c)) {
+				String cl = sort(map, f);
+				
+				Double tmp0 = record.get(cl).get(0) + 1;
+				record.get(cl).set(0, tmp0); // 计数
+				if(cl.equals(c)) {
+					Double tmp1 = record.get(cl).get(1) + 1;
+					record.get(cl).set(1, tmp1); // 计数
 					n++;
 				}
 				
 			}
-			System.out.println(c+"准确率" + (n/m));
+			System.out.println(c+"召回率:" + (n/m));
 		}
 		//System.out.println("准确率" + (n/m));
 	}
 	
+	static HashMap<String, ArrayList<Double>> record = new HashMap<String, ArrayList<Double>>();
+	public static void initRecord() {
+		String C[] = {"CAR", "EDUCATION", "FINANCE", "LOTTERY", "MEDICAL", "NEWS", "PROPERTY", "SPORT", "TOURISM"};
+		for(String c : C) {
+			ArrayList<Double> r = new ArrayList<Double>();
+			r.add(new Double(0));
+			r.add(new Double(0));
+			record.put(c, r);
+		}
+	}
+	public static void dprint() {
+		String C[] = {"CAR", "EDUCATION", "FINANCE", "LOTTERY", "MEDICAL", "NEWS", "PROPERTY", "SPORT", "TOURISM"};
+		for(String c : C) {
+			double m = record.get(c).get(0);
+			double n = record.get(c).get(1);
+			System.out.println(c+"准确率:" + (n/m));
+		}
+	}
 	public static void main(String argv[]) throws IOException {
-		
+		initRecord();
 		totalTest();
+		/*
+		 * 输出准确率
+		 */
+		dprint();
 		//sort(map);
 	}
 
