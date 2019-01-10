@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Test {
+public class Main {
 	/*
 	 * 求文件对于某一类的后验概率
 	 * dir：文件分词后词典
@@ -90,6 +90,11 @@ public class Test {
 				
 			}
 			System.out.println(c+"召回率:" + (n/m));
+			Double i = total.get(0) + m;
+			Double j = total.get(1) + n;
+			total.set(0, i);
+			total.set(1, j);
+			
 		}
 		//System.out.println("准确率" + (n/m));
 	}
@@ -103,6 +108,7 @@ public class Test {
 			r.add(new Double(0));
 			record.put(c, r);
 		}
+		total.add(new Double(0));total.add(new Double(0));
 	}
 	public static void dprint() {
 		String C[] = {"CAR", "EDUCATION", "FINANCE", "LOTTERY", "MEDICAL", "NEWS", "PROPERTY", "SPORT", "TOURISM"};
@@ -111,15 +117,21 @@ public class Test {
 			double n = record.get(c).get(1);
 			System.out.println(c+"准确率:" + (n/m));
 		}
+		
 	}
+	static ArrayList<Double> total = new ArrayList<Double>();
 	public static void main(String argv[]) throws IOException {
 		initRecord();
 		totalTest();
 		/*
 		 * 输出准确率
 		 */
+		System.out.println("------------------------");
 		dprint();
-		//sort(map);
+		/*
+		 * 总体准确率（总体召回率）；
+		 */
+		System.out.println("总体准确/召回率:" + (total.get(1)/total.get(0)));
 	}
 
 }
